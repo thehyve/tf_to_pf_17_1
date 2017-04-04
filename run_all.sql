@@ -1,0 +1,16 @@
+@biomart_tf_to_pf.SQL
+@deapp_tf_to_pf.SQL
+@i2b2metadata_tf_to_pf.SQL
+@searchapp_tf_to_pf.SQL
+@tm_lz_tf_to_pf.SQL
+@study.sql
+@trial_visit_dimension.sql
+@observation_fact.sql
+@dimension_description.sql
+@study_dimension_descriptions.sql
+@de_rnaseq_transcript_annot.sql
+@de_rnaseq_transcript_data.sql
+@supported_workflow.sql
+@storage_system.sql
+@linked_file_collection.sql
+@data_migration.sql
