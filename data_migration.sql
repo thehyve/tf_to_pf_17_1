@@ -1,3 +1,5 @@
+-- design explaination ?
+
 -- Fill dimension dictionary
 insert into i2b2metadata.dimension_description(name) 
 select 'study'
@@ -74,6 +76,7 @@ select
   tn.trial as accession
 from i2b2metadata.i2b2_trial_nodes tn
   where not exists(select * from biomart.bio_experiment be where be.accession = tn.trial);
+-- subquery return 0 rows  
 
 -- Insert missing studies
 insert into i2b2demodata.study(
@@ -144,6 +147,7 @@ where ssm.timepoint is not null and ssm.timepoint <> '' and not exists(select * 
 -- Regenerate HD observations
 --- 1. Remove existin HD observations.
 delete from i2b2demodata.observation_fact obs where obs.concept_cd in (select concept_code from deapp.de_subject_sample_mapping ssm);
+-- need confirmation from Haiyan
 
 --- 2. Add the HD sample code observation
 insert into I2B2DEMODATA.OBSERVATION_FACT(
@@ -229,6 +233,7 @@ where trial_visit_num is null;
 -- Fix referencial consistency for the visit dimension.
 update i2b2demodata.observation_fact set encounter_num = -1
 where encounter_num <> -1 and not exists(select * from i2b2demodata.visit_dimension v where v.encounter_num = observation_fact.encounter_num);
+-- need confirmation from Haiyan
 
 -- Samples and time series migration 
 -- See https://wiki.transmartfoundation.org/display/transmartwiki/Samples+and+Time+series+data
@@ -309,5 +314,6 @@ UPDATE I2B2DEMODATA.OBSERVATION_FACT SET TRIAL_VISIT_NUM = (
   and cst.REL_TIME_LABEL = tv.REL_TIME_LABEL
   and cst.REL_TIME_UNIT_CD = tv.REL_TIME_UNIT_CD)
 WHERE concept_cd in (select concept_cd from concept_specific_trials);
+-- check on all data updates
 
 DROP TABLE concept_specific_trials;
