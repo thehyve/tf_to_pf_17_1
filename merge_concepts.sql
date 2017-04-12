@@ -35,10 +35,13 @@ join DEAPP.DE_SUBJECT_SAMPLE_MAPPING sample_ on sample_.concept_code = cd.CONCEP
 where sample_.TRIAL_NAME like 'MS_%'
 and cd.concept_path like '%GPL570%'
 order by cd.concept_path;
+-- subquery return 0 row
+
 
 ----****** Relink the metadata records to shared concept ******
 update i2b2metadata.i2b2_secure set c_dimcode = (select concept_path from shared_concept) where c_dimcode in (select concept_path from concept_pathes_to_replace);
 update i2b2metadata.i2b2 set c_dimcode = (select concept_path from shared_concept) where c_dimcode in (select concept_path from concept_pathes_to_replace);
+-- check with Haiyan
 
 ----****** Introduce new root folder to the tree *****
 insert into i2b2metadata.table_access(
