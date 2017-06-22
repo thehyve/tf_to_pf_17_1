@@ -235,3 +235,10 @@ where trial_visit_num is null;
 -- Fix referencial consistency for the visit dimension.
 update i2b2demodata.observation_fact set encounter_num = -1
 where encounter_num <> -1 and not exists(select * from i2b2demodata.visit_dimension v where v.encounter_num = observation_fact.encounter_num);
+
+-- added for performance
+ALTER TABLE i2b2demodata.observation_fact ADD CONSTRAINT observation_fact_pkey PRIMARY KEY (encounter_num, patient_num, concept_cd, provider_id, instance_num, modifier_cd, start_date);
+ALTER TABLE i2b2demodata.observation_fact ADD CONSTRAINT trial_visit_dim_fk FOREIGN KEY (trial_visit_num) REFERENCES i2b2demodata.trial_visit_dimension(trial_visit_num);
+CREATE INDEX idx_fact_trial_visit_num ON i2b2demodata.observation_fact(trial_visit_num);
+CREATE INDEX I2B2DEMODATA.IDX_OB_FACT_2 ON I2B2DEMODATA.OBSERVATION_FACT(CONCEPT_CD, PATIENT_NUM, ENCOUNTER_NUM);
+
